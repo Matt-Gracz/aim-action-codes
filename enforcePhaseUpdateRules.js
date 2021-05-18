@@ -21,15 +21,20 @@
     their plate.
 
     Script design: The script executes a series of functions that map to business rules, thus enforcing one-by-one
-    each rule that you want to execute before a Phase changes states.  Rules:
+    each rule that you want to execute before a Phase changes states.  
+    Program Governance Rules:
     1) All business rule functions return true IFF successful.
        1.a) A false return will be considered an overall fail for the script
        2.b) When there's an overall fail,  "false;" shall be the last statement to be executed in the program, so
             that newDocument's errors can be printed to the screen for the user to see to guide them to the
             appropriate corrective action(s)
-    2) Everything that is logged is logged both to the catalina/stderr server logs, as well as to the Batch Event
-       log IFF DEBUG==true.
-
+    2) Everything that is logged is logged to the catalina/stderr server logs, unconditionally. All text is also
+       logged to the Batch Event log IFF DEBUG==true.
+    3) Errors should be displayed to the user.  This is an action code that fires typically when there's a human
+       interacting with the AiM website, so reader-friendly, helpful error messages to point people in the right
+       direction are a must.  Usability should be a primary concern.
+    4) Parameterize as much as possible, in order to maximize non-programmer administrative users' power over
+       the action code's execution.
 
 */
 
@@ -60,7 +65,6 @@ const LOG_MESSAGE = require(MODULE_PATH + "log-message_1.0");
 LOG_MESSAGE.init(LOG_MSG_PREFIX, DEBUG);
 var logRecords = [];
 
-
 /* Start of actual script code */
 log("STARTING");
 //if the business rules fail to hold, bail out and return all errors to the user
@@ -82,6 +86,7 @@ if(!success){
     //the last statement in order for newDocument's
     //error list to print to the screen
     false;
+}
 else {
     log("STOPPING - COMPLETED WITHOUT FATAL ERRORS");
 }
@@ -90,7 +95,6 @@ function runScript() {
     // Need to clear any potentially lingering errors on the screen or a previous warning could still be there
     // and the user will get stuck on a modal dialogue
     let phase = newDocument;
-    let status = true;
     phase.clearErrors();
 
     //Enforce business rules one-by-one by conjoining the
@@ -103,6 +107,7 @@ function runScript() {
     //changes.  Currently just preventing the user from
     //making certain status changes when (if it exists)
     //the associated/child inspection is still open.
+    let status = true;
     status = status && preventInvalidStatusChange(phase);
 
     return status;
@@ -122,7 +127,7 @@ function preventInvalidStatusChange(phase) {
     let phsStrForLog = proposal + "-" + sortCode;
     let phaseStatus = phase.getStatusCode();
     log("Processing " + phsStrForLog + " moving to Status: " + phaseStatus);
-    if(!PROHIBITED_STATUSES.includes(phaseStatus)) {
+    if(PROHIBITED_STATUSES.indexOf(phaseStatus) < 0) {
         logIfDebug("Phase processed - nothing to do.");
     }
     else {
