@@ -143,7 +143,7 @@ function preventInvalidStatusChange(phase) {
                 //The below causes the text in errorText to pop up to the AiM or Go user once it is added to the action code's
                 //errorlist via newDocument.addError conjoined with the condition that the action code's last statement is just
                 //a simple "false;"
-                let errorText = ["You must submit this Phase's inspection before changing the status to " + phaseStatus]
+                let errorText = ["YOU MUST SUBMIT THIS PHASE'S INSPECTION BEFORE CHANGING THE STATUS TO " + phaseStatus]
                 let errorMessage = new com.maximus.fmax.common.framework.util.ErrorMessage(
                     com.maximus.fmax.workmgt.util.AePPhsEAttributeName.STATUS_CODE,
                     com.maximus.fmax.common.framework.util.ErrorCode.SCRIPT_ERROR,
