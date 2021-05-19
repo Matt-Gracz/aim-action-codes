@@ -173,9 +173,9 @@ function writeToBatchEvent(success=true) {
     var woPhaseString = newDocument.getProposal() + "-" + newDocument.getSortCode();
     logger.init("Enforce Phase Complete Rules [" + woPhaseString + "]");
     logRecords.forEach(function (logMsg) {
-        LOG_MESSAGE.getInstance().logMessage("Inside LogMsg: " + logMsg); //mgracz for debugging the logging
-                                                                          //why isn't writing to ae_event_log
-                                                                          //working????? -mgracz
+        //This line is for debugging the logging.  Wy isn't writing to ae_event_log
+        //working????? -mgracz
+        //LOG_MESSAGE.getInstance().logMessage("Inside LogMsg: " + logMsg);
         logger.getInstance().writeLog(new logger.LogRecord("E", null, logMsg));
     });
     return success
