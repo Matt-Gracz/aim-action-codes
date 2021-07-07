@@ -3,7 +3,7 @@
 //@author Matt Gracz
 //@Creation 18 May 2021
 //@Customer: University of Wisconsin
-//Type: Triggered - before insert 
+//Type: Triggered - before update 
 
 /* Change Log*
 **************************************************************************************************************
@@ -14,7 +14,7 @@
 */
 
 /*
-    Script Concept: This script, set up as a before-insert ae_p_phs_e Advanced (es6) script, enforces all
+    Script Concept: This script, set up as a before-update ae_p_phs_e Advanced (es6) script, enforces all
     the business rules stipulated to occur when a Phase is updated ever.  E.g., In the first version's case, the
     script enforces the business rule of not letting a Phase get set to "Phase Complete" until the inspection's
     complete.  This helps us ensure our workers are completing all their tasks before getting the Phase off
